@@ -1,5 +1,6 @@
 import { FC } from 'react'
-import { CardType } from 'types/card-type'
+import { NavLink } from 'react-router-dom'
+import { CardType } from 'api/jobs-api'
 
 type CardPropsType = {
   card: CardType
@@ -10,12 +11,12 @@ export const Card: FC<CardPropsType> = ({ card }) => {
     <div className={`${card.bg} p-6 rounded-lg shadow-md`}>
       <h2 className="text-2xl font-bold">{card.title}</h2>
       <p className="mt-2 mb-4">{card.description}</p>
-      <a
-        href="/jobs.html"
+      <NavLink
+        to={card.href}
         className="inline-block bg-black text-white rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-700"
       >
         {card.link}
-      </a>
+      </NavLink>
     </div>
   )
 }

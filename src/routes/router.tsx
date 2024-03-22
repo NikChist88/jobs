@@ -9,7 +9,6 @@ import {
   createBrowserRouter,
   createRoutesFromElements,
 } from 'react-router-dom'
-import { jobs } from '../data/data.json'
 
 export const router = createBrowserRouter(
   createRoutesFromElements(
@@ -19,11 +18,11 @@ export const router = createBrowserRouter(
     >
       <Route
         index
-        element={<HomePage jobs={jobs} />}
+        element={<HomePage />}
       />
       <Route
         path="/jobs"
-        element={<JobsPage jobs={jobs} />}
+        element={<JobsPage />}
       />
       <Route
         path="/job"

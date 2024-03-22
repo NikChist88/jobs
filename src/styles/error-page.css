@@ -23,6 +23,7 @@
 .notfound .notfound-404 {
   height: 158px;
   line-height: 153px;
+  margin-bottom: 40px;
 }
 
 .notfound .notfound-404 h1 {
@@ -45,7 +46,7 @@
   font-size: 16px;
   font-weight: 400;
   margin-top: 5%;
-  margin-bottom: 5%;
+  margin-bottom: 30px;
 }
 
 .notfound a {

@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
-import { JobType } from 'types/job-type'
 import { NavLink } from 'react-router-dom'
 import { FaLocationDot } from 'react-icons/fa6'
+import { JobType } from 'api/jobs-api'
 
 type JobPropsType = {
   job: JobType
@@ -37,7 +37,7 @@ export const JobItem: FC<JobPropsType> = ({ job }) => {
             {job.location}
           </div>
           <NavLink
-            to={`/job/${job.id}`}
+            to={`/job`}
             className="h-[36px] bg-indigo-500 transition-colors duration-300 hover:bg-indigo-600 text-white px-4 py-2 rounded-lg text-center text-sm"
           >
             Read More
