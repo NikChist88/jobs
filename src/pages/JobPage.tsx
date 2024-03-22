@@ -1,11 +1,9 @@
-import { Header } from '@components/Header'
 import { Breadcrumbs } from '@components/Breadcrumbs'
 import { Sidebar } from '@components/Sidebar'
 
 export const JobPage = () => {
   return (
     <>
-      <Header />
       <Breadcrumbs />
       <section className="bg-indigo-50">
         <div className="container m-auto py-10 px-6">

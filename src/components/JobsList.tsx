@@ -1,7 +1,14 @@
-import { jobs } from '../data/data.json'
-import { Job } from './Job'
+import { FC } from 'react'
+import { JobItem } from './JobItem'
+import { JobType } from 'types/job-type'
 
-export const Jobs = () => {
+type JobsListPropsType = {
+  jobs: JobType[]
+}
+
+export const JobsList: FC<JobsListPropsType> = ({ jobs }) => {
+  const recentJobs = jobs.slice(0, 3)
+
   return (
     <section className="bg-blue-50 px-4 py-10">
       <div className="container-xl lg:container m-auto">
@@ -9,8 +16,8 @@ export const Jobs = () => {
           Browse Jobs
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {jobs.map((job) => (
-            <Job
+          {recentJobs.map((job) => (
+            <JobItem
               key={job.id}
               job={job}
             />

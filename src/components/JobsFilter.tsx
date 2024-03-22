@@ -1,4 +1,4 @@
-export const FilterJobs = () => {
+export const JobsFilter = () => {
   return (
     <section className="bg-blue-50 py-4">
       <div className="container mx-auto px-4">

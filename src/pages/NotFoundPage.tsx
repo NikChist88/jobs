@@ -1,11 +1,9 @@
-import { Header } from '@components/Header'
 import { NavLink } from 'react-router-dom'
 import '@styles/error-page.css'
 
 export const NotFoundPage = () => {
   return (
     <>
-      <Header />
       <div id="notfound">
         <div className="notfound">
           <div className="notfound-404">
