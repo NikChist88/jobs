@@ -11,21 +11,27 @@ export const jobsAPI = {
   getJobs() {
     return instance.get<JobType[]>('jobs')
   },
-  getCards() {
-    return instance.get<CardType[]>('cards')
+  getJob(id: string) {
+    return instance.get<JobType>(`jobs/${id}`)
+  },
+  addJob(job: JobType) {
+    return instance.post('jobs', job)
+  },
+  deleteJob(id: string) {
+    return instance.delete(`jobs/${id}`)
   }
 }
 
 export type CardType = {
   id: string
-  href: string,
+  href: string
   title: string
   description: string
   link: string
   bg: string
 }
 
-type CompanyType = {
+export type CompanyType = {
   name: string
   description: string
   contactEmail: string

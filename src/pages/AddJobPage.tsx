@@ -1,9 +1,54 @@
-export const AddJobPage = () => {
+import { FC, useState } from 'react'
+import { Breadcrumbs } from '@components/Breadcrumbs'
+import { useFormik } from 'formik'
+import { JobType, jobsAPI } from '../api/jobs-api'
+import { AxiosError } from 'axios'
+import { Navigate } from 'react-router-dom'
+
+export const AddJobPage: FC = () => {
+  const [jobAdded, setJobAdded] = useState(false)
+
+  const formik = useFormik({
+    initialValues: {
+      id: '',
+      title: '',
+      type: '',
+      description: '',
+      salary: '',
+      location: '',
+      company: {
+        name: '',
+        description: '',
+        contactEmail: '',
+        contactPhone: '',
+      },
+    },
+    onSubmit: (values: JobType) => {
+      jobsAPI
+        .addJob(values)
+        .then((res) => {
+          if (res) {
+            window.alert('Job added!')
+            setJobAdded(true)
+          }
+        })
+        .catch((err: AxiosError) => window.alert(err.message))
+    },
+  })
+
+  if (jobAdded) {
+    return <Navigate to={'/jobs'} />
+  }
+
   return (
     <section className="bg-indigo-50">
-      <div className="container m-auto max-w-2xl py-24">
+      <Breadcrumbs
+        href="/"
+        title="Back to Home Page"
+      />
+      <div className="container m-auto max-w-2xl py-14">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
-          <form>
+          <form onSubmit={formik.handleSubmit}>
             <h2 className="text-3xl text-center font-semibold mb-6">Add Job</h2>
 
             <div className="mb-4">
@@ -15,11 +60,12 @@ export const AddJobPage = () => {
               </label>
               <select
                 id="type"
-                name="type"
                 className="border rounded w-full py-2 px-3"
                 required
+                {...formik.getFieldProps('type')}
               >
-                <option value="Full-Time">Full-Time</option>
+                <option value='---'>---</option>
+                <option value='Full-Time'>Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
                 <option value="Remote">Remote</option>
                 <option value="Internship">Internship</option>
@@ -27,18 +73,22 @@ export const AddJobPage = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">
+              <label
+                htmlFor="title"
+                className="block text-gray-700 font-bold mb-2"
+              >
                 Job Listing Name
               </label>
               <input
                 type="text"
                 id="title"
-                name="title"
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="eg. Beautiful Apartment In Miami"
                 required
+                {...formik.getFieldProps('title')}
               />
             </div>
+
             <div className="mb-4">
               <label
                 htmlFor="description"
@@ -48,26 +98,27 @@ export const AddJobPage = () => {
               </label>
               <textarea
                 id="description"
-                name="description"
                 className="border rounded w-full py-2 px-3"
                 rows={4}
                 placeholder="Add any job duties, expectations, requirements, etc"
+                {...formik.getFieldProps('description')}
               ></textarea>
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="type"
+                htmlFor="salary"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Salary
               </label>
               <select
                 id="salary"
-                name="salary"
                 className="border rounded w-full py-2 px-3"
                 required
+                {...formik.getFieldProps('salary')}
               >
+                <option value='---'>---</option>
                 <option value="Under $50K">Under $50K</option>
                 <option value="$50K - 60K">$50K - $60K</option>
                 <option value="$60K - 70K">$60K - $70K</option>
@@ -83,16 +134,19 @@ export const AddJobPage = () => {
             </div>
 
             <div className="mb-4">
-              <label className="block text-gray-700 font-bold mb-2">
+              <label
+                htmlFor="location"
+                className="block text-gray-700 font-bold mb-2"
+              >
                 Location
               </label>
               <input
                 type="text"
                 id="location"
-                name="location"
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="Company Location"
                 required
+                {...formik.getFieldProps('location')}
               />
             </div>
 
@@ -100,71 +154,72 @@ export const AddJobPage = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="company"
+                htmlFor="name"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Company Name
               </label>
               <input
+                id="name"
                 type="text"
-                id="company"
-                name="company"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Company Name"
+                {...formik.getFieldProps('company.name')}
               />
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="company_description"
+                htmlFor="desc"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Company Description
               </label>
               <textarea
-                id="company_description"
-                name="company_description"
+                id="desc"
                 className="border rounded w-full py-2 px-3"
                 rows={4}
                 placeholder="What does your company do?"
+                {...formik.getFieldProps('company.desc')}
               ></textarea>
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="contact_email"
+                htmlFor="contactEmail"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Contact Email
               </label>
               <input
                 type="email"
-                id="contact_email"
-                name="contact_email"
+                id="contactEmail"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Email address for applicants"
                 required
+                {...formik.getFieldProps('company.contactEmail')}
               />
             </div>
+
             <div className="mb-4">
               <label
-                htmlFor="contact_phone"
+                htmlFor="contactPhone"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Contact Phone
               </label>
               <input
                 type="tel"
-                id="contact_phone"
-                name="contact_phone"
+                id="contactPhone"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Optional phone for applicants"
+                {...formik.getFieldProps('company.contactPhone')}
               />
             </div>
 
             <div>
               <button
-                className="bg-indigo-500 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
+                className="bg-indigo-500 transition-colors duration-300 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
                 Add Job

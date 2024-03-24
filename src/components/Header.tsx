@@ -1,11 +1,11 @@
 import { NavLink } from 'react-router-dom'
-import logo from '@assets/images/logo.png'
+import logo from '@assets/images/job-search.png'
 
 export const Header = () => {
   return (
     <nav className="bg-indigo-700 border-b border-indigo-500">
       <div className="container-xl lg:container m-auto">
-        <div className="flex h-20 items-center justify-between">
+        <div className="flex h-20 items-center justify-between px-6">
           <div className="flex flex-1 items-center justify-center md:items-stretch md:justify-start">
             <NavLink
               className="flex flex-shrink-0 items-center mr-4"
@@ -17,7 +17,7 @@ export const Header = () => {
                 alt="React Jobs"
               />
               <span className="hidden md:block text-white text-2xl font-bold ml-2">
-                React Jobs
+                Search Jobs
               </span>
             </NavLink>
             <div className="md:ml-auto">
