@@ -1,32 +1,22 @@
-import { FC, useState } from 'react'
-import { CompanyType, jobsAPI } from '../api/jobs-api'
-import { NavLink, Navigate } from 'react-router-dom'
-import { AxiosError } from 'axios'
+import { FC } from 'react'
+import { NavLink, useNavigate } from 'react-router-dom'
+import { JobType } from '../api/jobs-api'
+import { toast } from 'react-toastify'
 
 type SidebarPropsType = {
-  id?: string
-  company?: CompanyType
+  job: JobType
+  deleteJob: (id: string) => void
 }
 
-export const Sidebar: FC<SidebarPropsType> = ({ id, company }) => {
-  const [jobDelete, setJobDelete] = useState(false)
+export const Sidebar: FC<SidebarPropsType> = ({ job, deleteJob }) => {
+  const navigate = useNavigate()
 
-  const deleteJob = () => {
-    if (window.confirm('Delete Job?') && id) {
-      jobsAPI
-        .deleteJob(id)
-        .then((res) => {
-          if (res) {
-            window.alert('Job deleted!')
-            setJobDelete(true)
-          }
-        })
-        .catch((err: AxiosError) => window.alert(err.message))
+  const handleDeleteJob = () => {
+    if (window.confirm('Delete job?')) {
+      deleteJob(job.id)
+      toast.success('Job deleted successfully!')
+      navigate('/jobs')
     }
-  }
-
-  if (jobDelete) {
-    return <Navigate to={'/jobs'} />
   }
 
   return (
@@ -34,31 +24,27 @@ export const Sidebar: FC<SidebarPropsType> = ({ id, company }) => {
       {/* <!-- Company Info --> */}
       <div className="bg-white p-6 rounded-lg shadow-md">
         <h3 className="text-xl font-bold mb-6">Company Info</h3>
-        <h2 className="text-2xl">{company?.name}</h2>
-        <p className="my-2">{company?.description}</p>
+        <h2 className="text-2xl">{job.companyName}</h2>
+        <p className="my-2">{job.companyDesc}</p>
         <hr className="my-4" />
         <h3 className="text-xl">Contact Email:</h3>
-        <p className="my-2 bg-indigo-100 p-2 font-bold">
-          {company?.contactEmail}
-        </p>
+        <p className="my-2 bg-indigo-100 p-2 font-bold">{job.contactEmail}</p>
         <h3 className="text-xl">Contact Phone:</h3>
-        <p className="my-2 bg-indigo-100 p-2 font-bold">
-          {company?.contactPhone}
-        </p>
+        <p className="my-2 bg-indigo-100 p-2 font-bold">{job.contactPhone}</p>
       </div>
 
       {/* <!-- Manage --> */}
       <div className="bg-white p-6 rounded-lg shadow-md mt-6">
         <h3 className="text-xl font-bold mb-6">Manage Job</h3>
         <NavLink
-          to="/addJob"
+          to={`/addJob/${job.id}`}
           className="bg-indigo-500 transition-colors duration-300 hover:bg-indigo-600 text-white text-center font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
         >
           Edit Job
         </NavLink>
         <button
           className="bg-red-500 transition-colors duration-300 hover:bg-red-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline mt-4 block"
-          onClick={deleteJob}
+          onClick={handleDeleteJob}
         >
           Delete Job
         </button>

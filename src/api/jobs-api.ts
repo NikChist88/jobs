@@ -31,13 +31,6 @@ export type CardType = {
   bg: string
 }
 
-export type CompanyType = {
-  name: string
-  description: string
-  contactEmail: string
-  contactPhone: string
-}
-
 export type JobType = {
   id: string
   title: string
@@ -45,5 +38,8 @@ export type JobType = {
   description: string
   location: string
   salary: string
-  company: CompanyType
+  companyName: string
+  companyDesc: string
+  contactEmail: string
+  contactPhone: string
 }

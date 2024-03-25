@@ -1,50 +1,41 @@
-import { FC, useState } from 'react'
+import { FC } from 'react'
 import { Breadcrumbs } from '@components/Breadcrumbs'
 import { useFormik } from 'formik'
-import { JobType, jobsAPI } from '../api/jobs-api'
-import { AxiosError } from 'axios'
-import { Navigate } from 'react-router-dom'
+import { JobType } from '../api/jobs-api'
+import { useLoaderData, useNavigate } from 'react-router-dom'
 
-export const AddJobPage: FC = () => {
-  const [jobAdded, setJobAdded] = useState(false)
+type AddJobPagePropsType = {
+  addJob?: (job: JobType) => void
+}
+
+export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
+  const navigate = useNavigate()
+  const job = useLoaderData() as JobType
 
   const formik = useFormik({
     initialValues: {
-      id: '',
-      title: '',
-      type: '',
-      description: '',
-      salary: '',
-      location: '',
-      company: {
-        name: '',
-        description: '',
-        contactEmail: '',
-        contactPhone: '',
-      },
+      id: job?.id,
+      title: job?.title,
+      type: job?.type,
+      description: job?.description,
+      salary: job?.salary,
+      location: job?.location,
+      companyName: job?.companyName,
+      companyDesc: job?.companyDesc,
+      contactEmail: job?.contactEmail,
+      contactPhone: job?.contactPhone,
     },
     onSubmit: (values: JobType) => {
-      jobsAPI
-        .addJob(values)
-        .then((res) => {
-          if (res) {
-            window.alert('Job added!')
-            setJobAdded(true)
-          }
-        })
-        .catch((err: AxiosError) => window.alert(err.message))
+      addJob && addJob(values)
+      navigate('/jobs')
     },
   })
-
-  if (jobAdded) {
-    return <Navigate to={'/jobs'} />
-  }
 
   return (
     <section className="bg-indigo-50">
       <Breadcrumbs
-        href="/"
-        title="Back to Home Page"
+        href={job ? `/jobs/${job.id}` : '/'}
+        title={job ? 'Back' : 'Back to home page'}
       />
       <div className="container m-auto max-w-2xl py-14">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
@@ -62,10 +53,11 @@ export const AddJobPage: FC = () => {
                 id="type"
                 className="border rounded w-full py-2 px-3"
                 required
-                {...formik.getFieldProps('type')}
+                onChange={formik.handleChange}
+                value={formik.values.type}
               >
-                <option value='---'>---</option>
-                <option value='Full-Time'>Full-Time</option>
+                <option value="---">---</option>
+                <option value="Full-Time">Full-Time</option>
                 <option value="Part-Time">Part-Time</option>
                 <option value="Remote">Remote</option>
                 <option value="Internship">Internship</option>
@@ -85,7 +77,8 @@ export const AddJobPage: FC = () => {
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="eg. Beautiful Apartment In Miami"
                 required
-                {...formik.getFieldProps('title')}
+                onChange={formik.handleChange}
+                defaultValue={formik.values.title}
               />
             </div>
 
@@ -101,7 +94,8 @@ export const AddJobPage: FC = () => {
                 className="border rounded w-full py-2 px-3"
                 rows={4}
                 placeholder="Add any job duties, expectations, requirements, etc"
-                {...formik.getFieldProps('description')}
+                onChange={formik.handleChange}
+                value={formik.values.description}
               ></textarea>
             </div>
 
@@ -116,9 +110,10 @@ export const AddJobPage: FC = () => {
                 id="salary"
                 className="border rounded w-full py-2 px-3"
                 required
-                {...formik.getFieldProps('salary')}
+                onChange={formik.handleChange}
+                value={formik.values.salary}
               >
-                <option value='---'>---</option>
+                <option value="---">---</option>
                 <option value="Under $50K">Under $50K</option>
                 <option value="$50K - 60K">$50K - $60K</option>
                 <option value="$60K - 70K">$60K - $70K</option>
@@ -146,7 +141,8 @@ export const AddJobPage: FC = () => {
                 className="border rounded w-full py-2 px-3 mb-2"
                 placeholder="Company Location"
                 required
-                {...formik.getFieldProps('location')}
+                onChange={formik.handleChange}
+                defaultValue={formik.values.location}
               />
             </div>
 
@@ -154,33 +150,35 @@ export const AddJobPage: FC = () => {
 
             <div className="mb-4">
               <label
-                htmlFor="name"
+                htmlFor="companyName"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Company Name
               </label>
               <input
-                id="name"
+                id="companyName"
                 type="text"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Company Name"
-                {...formik.getFieldProps('company.name')}
+                onChange={formik.handleChange}
+                value={formik.values.companyName}
               />
             </div>
 
             <div className="mb-4">
               <label
-                htmlFor="desc"
+                htmlFor="companyDesc"
                 className="block text-gray-700 font-bold mb-2"
               >
                 Company Description
               </label>
               <textarea
-                id="desc"
+                id="companyDesc"
                 className="border rounded w-full py-2 px-3"
                 rows={4}
                 placeholder="What does your company do?"
-                {...formik.getFieldProps('company.desc')}
+                onChange={formik.handleChange}
+                value={formik.values.companyDesc}
               ></textarea>
             </div>
 
@@ -197,7 +195,8 @@ export const AddJobPage: FC = () => {
                 className="border rounded w-full py-2 px-3"
                 placeholder="Email address for applicants"
                 required
-                {...formik.getFieldProps('company.contactEmail')}
+                onChange={formik.handleChange}
+                value={formik.values.contactEmail}
               />
             </div>
 
@@ -213,7 +212,8 @@ export const AddJobPage: FC = () => {
                 id="contactPhone"
                 className="border rounded w-full py-2 px-3"
                 placeholder="Optional phone for applicants"
-                {...formik.getFieldProps('company.contactPhone')}
+                onChange={formik.handleChange}
+                value={formik.values.contactPhone}
               />
             </div>
 

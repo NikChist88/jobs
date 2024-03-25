@@ -16,12 +16,12 @@ export const JobItem: FC<JobPropsType> = ({ job }) => {
   }
 
   return (
-    <div className="bg-white rounded-xl shadow-md relative p-5">
+    <div className="bg-white rounded-xl shadow-md relative p-5 overflow-hidden">
       <div className="mb-3">
         <div className="text-gray-600 my-2">{job.type}</div>
         <h3 className="text-xl font-bold">{job.title}</h3>
       </div>
-      <div className="">{description}</div>
+      <div>{description}</div>
 
       {description.length > 90 && (
         <span
