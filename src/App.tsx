@@ -4,42 +4,33 @@ import { HomePage } from '@pages/HomePage'
 import { JobPage } from '@pages/JobPage'
 import { JobsPage } from '@pages/JobsPage'
 import { NotFoundPage } from '@pages/NotFoundPage'
-import { JobType, jobsAPI } from './api/jobs-api'
 import {
   Route,
   createBrowserRouter,
   createRoutesFromElements,
   RouterProvider,
+  LoaderFunction,
+  LoaderFunctionArgs,
 } from 'react-router-dom'
+import { useEffect } from 'react'
+import { JobType, useJobs } from './store/store'
+import { jobsAPI } from './api/jobs-api'
 
 export const App = () => {
-  // Add Job
-  const addJob = async (job: JobType) => {
-    try {
-      await jobsAPI.addJob(job)
-    } catch (err) {
-      window.alert(err)
-    }
-  }
+  const fetchJobs = useJobs((state) => state.fetchJobs)
 
-  // Delete Job
-  const deleteJob = async (id: string) => {
-    try {
-      await jobsAPI.deleteJob(id)
-    } catch (err) {
-      window.alert(err)
-    }
-  }
-
-  // Job Loader
-  const jobLoader = async ({ params }: any) => {
-    try {
+  const loader: LoaderFunction = async ({
+    params,
+  }: LoaderFunctionArgs<JobType>) => {
+    if (params.id) {
       const { data } = await jobsAPI.getJob(params.id)
       return data
-    } catch (err) {
-      window.alert(err)
     }
   }
+
+  useEffect(() => {
+    fetchJobs()
+  }, [])
 
   const router = createBrowserRouter(
     createRoutesFromElements(
@@ -57,21 +48,17 @@ export const App = () => {
         />
         <Route
           path="/jobs/:id"
-          element={
-            <JobPage
-              deleteJob={deleteJob}
-            />
-          }
-          loader={jobLoader}
+          element={<JobPage />}
+          loader={loader}
         />
         <Route
           path="/addJob"
-          element={<AddJobPage addJob={addJob} />}
+          element={<AddJobPage />}
         />
         <Route
           path="/addJob/:id"
           element={<AddJobPage />}
-          loader={jobLoader}
+          loader={loader}
         />
         <Route
           path="/*"

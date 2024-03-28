@@ -1,20 +1,19 @@
 import { FC } from 'react'
 import { NavLink, useNavigate } from 'react-router-dom'
-import { JobType } from '../api/jobs-api'
-import { toast } from 'react-toastify'
+import { JobType } from '../store/store'
+import { useJobs } from '../store/store'
 
 type SidebarPropsType = {
   job: JobType
-  deleteJob: (id: string) => void
 }
 
-export const Sidebar: FC<SidebarPropsType> = ({ job, deleteJob }) => {
+export const Sidebar: FC<SidebarPropsType> = ({ job }) => {
+  const deleteJob = useJobs((state) => state.deleteJob)
   const navigate = useNavigate()
 
   const handleDeleteJob = () => {
     if (window.confirm('Delete job?')) {
       deleteJob(job.id)
-      toast.success('Job deleted successfully!')
       navigate('/jobs')
     }
   }

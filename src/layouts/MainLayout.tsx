@@ -9,7 +9,7 @@ export const MainLayout = () => {
       <Outlet />
       <ToastContainer
         position="top-center"
-        autoClose={2000}
+        autoClose={1000}
         theme="light"
       />
     </>

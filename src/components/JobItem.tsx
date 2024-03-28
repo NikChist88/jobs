@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FaLocationDot } from 'react-icons/fa6'
-import { JobType } from 'api/jobs-api'
+import { JobType } from '../store/store'
 
 type JobPropsType = {
   job: JobType
@@ -9,9 +9,9 @@ type JobPropsType = {
 
 export const JobItem: FC<JobPropsType> = ({ job }) => {
   const [showMore, setShowMore] = useState(false)
-  let description = job.description
+  let { description } = job
 
-  if (!showMore && description.length > 90) {
+  if (!showMore && description?.length > 90) {
     description = description.substring(0, 90) + '...'
   }
 
@@ -23,7 +23,7 @@ export const JobItem: FC<JobPropsType> = ({ job }) => {
       </div>
       <div>{description}</div>
 
-      {description.length > 90 && (
+      {description?.length > 90 && (
         <span
           className="block text-indigo-600 cursor-pointer hover:underline"
           onClick={() => setShowMore(!showMore)}

@@ -1,20 +1,22 @@
 import { FC } from 'react'
 import { Breadcrumbs } from '@components/Breadcrumbs'
 import { useFormik } from 'formik'
-import { JobType } from '../api/jobs-api'
 import { useLoaderData, useNavigate } from 'react-router-dom'
+import { useJobs, JobType } from '../store/store'
+import { nanoid } from 'nanoid'
 
-type AddJobPagePropsType = {
-  addJob?: (job: JobType) => void
-}
-
-export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
-  const navigate = useNavigate()
+export const AddJobPage: FC = () => {
+  const { createJob, updateJob } = useJobs((state) => ({
+    createJob: state.createJob,
+    updateJob: state.updateJob,
+  }))
   const job = useLoaderData() as JobType
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
       id: job?.id,
+      uuid: nanoid(),
       title: job?.title,
       type: job?.type,
       description: job?.description,
@@ -26,7 +28,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
       contactPhone: job?.contactPhone,
     },
     onSubmit: (values: JobType) => {
-      addJob && addJob(values)
+      job ? updateJob(job.id, values) : createJob(values)
       navigate('/jobs')
     },
   })
@@ -54,7 +56,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 className="border rounded w-full py-2 px-3"
                 required
                 onChange={formik.handleChange}
-                value={formik.values.type}
+                defaultValue={formik.values.type}
               >
                 <option value="---">---</option>
                 <option value="Full-Time">Full-Time</option>
@@ -95,7 +97,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 rows={4}
                 placeholder="Add any job duties, expectations, requirements, etc"
                 onChange={formik.handleChange}
-                value={formik.values.description}
+                defaultValue={formik.values.description}
               ></textarea>
             </div>
 
@@ -111,7 +113,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 className="border rounded w-full py-2 px-3"
                 required
                 onChange={formik.handleChange}
-                value={formik.values.salary}
+                defaultValue={formik.values.salary}
               >
                 <option value="---">---</option>
                 <option value="Under $50K">Under $50K</option>
@@ -161,7 +163,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 className="border rounded w-full py-2 px-3"
                 placeholder="Company Name"
                 onChange={formik.handleChange}
-                value={formik.values.companyName}
+                defaultValue={formik.values.companyName}
               />
             </div>
 
@@ -178,7 +180,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 rows={4}
                 placeholder="What does your company do?"
                 onChange={formik.handleChange}
-                value={formik.values.companyDesc}
+                defaultValue={formik.values.companyDesc}
               ></textarea>
             </div>
 
@@ -196,7 +198,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 placeholder="Email address for applicants"
                 required
                 onChange={formik.handleChange}
-                value={formik.values.contactEmail}
+                defaultValue={formik.values.contactEmail}
               />
             </div>
 
@@ -213,7 +215,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 className="border rounded w-full py-2 px-3"
                 placeholder="Optional phone for applicants"
                 onChange={formik.handleChange}
-                value={formik.values.contactPhone}
+                defaultValue={formik.values.contactPhone}
               />
             </div>
 
@@ -222,7 +224,7 @@ export const AddJobPage: FC<AddJobPagePropsType> = ({ addJob }) => {
                 className="bg-indigo-500 transition-colors duration-300 hover:bg-indigo-600 text-white font-bold py-2 px-4 rounded-full w-full focus:outline-none focus:shadow-outline"
                 type="submit"
               >
-                Add Job
+                {job ? 'Update job' : 'Add job'}
               </button>
             </div>
           </form>

@@ -2,14 +2,10 @@ import { FC } from 'react'
 import { Breadcrumbs } from '@components/Breadcrumbs'
 import { Sidebar } from '@components/Sidebar'
 import { FaLocationDot } from 'react-icons/fa6'
-import { JobType } from '../api/jobs-api'
 import { useLoaderData } from 'react-router-dom'
+import { JobType } from '../store/store'
 
-type JobPagePropsType = {
-  deleteJob: (id: string) => void
-}
-
-export const JobPage: FC<JobPagePropsType> = ({ deleteJob }) => {
+export const JobPage: FC = () => {
   const job = useLoaderData() as JobType
 
   return (
@@ -41,10 +37,7 @@ export const JobPage: FC<JobPagePropsType> = ({ deleteJob }) => {
                 <p>{job.salary}</p>
               </div>
             </main>
-            <Sidebar
-              job={job}
-              deleteJob={deleteJob}
-            />
+            <Sidebar job={job} />
           </div>
         </div>
       </section>

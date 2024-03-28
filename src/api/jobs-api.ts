@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { JobType } from '../store/store'
 
 const localhost = 'http://localhost:8000/'
 const mockAPI = 'https://65fd6f139fc4425c6531ee24.mockapi.io/data/'
@@ -14,12 +15,15 @@ export const jobsAPI = {
   getJob(id: string) {
     return instance.get<JobType>(`jobs/${id}`)
   },
-  addJob(job: JobType) {
+  createJob(job: JobType) {
     return instance.post('jobs', job)
   },
   deleteJob(id: string) {
     return instance.delete(`jobs/${id}`)
-  }
+  },
+  updateJob(id: string, job: JobType) {
+    return instance.put<JobType>(`jobs/${id}`, job)
+  },
 }
 
 export type CardType = {
@@ -29,17 +33,4 @@ export type CardType = {
   description: string
   link: string
   bg: string
-}
-
-export type JobType = {
-  id: string
-  title: string
-  type: string
-  description: string
-  location: string
-  salary: string
-  companyName: string
-  companyDesc: string
-  contactEmail: string
-  contactPhone: string
 }
