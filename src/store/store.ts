@@ -19,13 +19,10 @@ export type JobType = {
   contactEmail: string
   contactPhone: string
 }
-
 type JobsStoreType = {
   jobs: JobType[]
   job: JobType
   isLoading: boolean
-  searchQuery: string
-  setSearchQuery: (query: string) => void
   createJob: (job: JobType) => void
   updateJob: (requestId: string, job: JobType) => void
   deleteJob: (requestId: string) => void
@@ -51,10 +48,6 @@ export const useJobs = createWithEqualityFn<JobsStoreType>()(
         contactPhone: '',
       },
       isLoading: false,
-      searchQuery: '',
-      setSearchQuery: (query: string) => {
-        set(() => ({ searchQuery: query }))
-      },
       fetchJobs: () => {
         set({ isLoading: true })
         jobsAPI
@@ -111,17 +104,31 @@ export const useJobs = createWithEqualityFn<JobsStoreType>()(
     {
       name: 'jobs-storage',
       storage: createJSONStorage(() => localStorage),
-      // partialize: (state) => ({ jobs: state.jobs }),
+      partialize: (state) => ({ jobs: state.jobs, isLoading: state.isLoading }),
     }
   ),
   shallow
+)
+
+type JobsFilterStoreType = {
+  searchQuery: string
+  setSearchQuery: (query: string) => void
+}
+
+export const useJobsFilter = createWithEqualityFn<JobsFilterStoreType>(
+  (set) => ({
+    searchQuery: '',
+    setSearchQuery: (query: string) => {
+      set(() => ({ searchQuery: query }))
+    },
+    shallow,
+  })
 )
 
 export type AuthDataType = {
   email: string
   password: string
 }
-
 type AuthStoreType = {
   authData: AuthDataType
   isLogin: boolean
@@ -141,6 +148,8 @@ export const useAuth = createWithEqualityFn<AuthStoreType>()(
         const authData = get().authData
         if (compareObjects(authData, data)) {
           set({ isLogin: true })
+        } else {
+          toast.error('Wrond email or password!')
         }
       },
       logout: () => {
@@ -150,6 +159,7 @@ export const useAuth = createWithEqualityFn<AuthStoreType>()(
     {
       name: 'auth-storage',
       storage: createJSONStorage(() => localStorage),
+      partialize: (state) => ({ isLogin: state.isLogin }),
     }
   ),
   shallow

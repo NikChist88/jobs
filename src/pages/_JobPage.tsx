@@ -16,13 +16,13 @@ export const _JobPage: FC = () => {
   const handleDeleteJob = () => {
     if (window.confirm('Delete job?')) {
       deleteJob(job.id)
-      navigate('/jobs')
+      navigate('/jobs', { replace: true })
     }
   }
 
   useEffect(() => {
     id && fetchJob(id)
-  }, [])
+  }, [id])
 
   return (
     <>

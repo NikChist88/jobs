@@ -1,13 +1,13 @@
 import { FC } from 'react'
 import { useFormik } from 'formik'
 import { AuthDataType, useAuth } from '../store/store'
-import { Navigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 export const LoginPage: FC = () => {
-  const { isLogin, login } = useAuth((state) => ({
-    isLogin: state.isLogin,
+  const { login } = useAuth((state) => ({
     login: state.login,
   }))
+  const navigate = useNavigate()
 
   const formik = useFormik({
     initialValues: {
@@ -16,12 +16,9 @@ export const LoginPage: FC = () => {
     },
     onSubmit: (values: AuthDataType) => {
       login(values)
+      navigate('/', { replace: true })
     },
   })
-
-  if (isLogin) {
-    return <Navigate to={'/'} />
-  }
 
   return (
     <div className="absolute top-1/3 left-1/2 -translate-x-1/2 shadow-md p-10 max-w-[500px] w-full">
