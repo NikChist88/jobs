@@ -13,7 +13,7 @@ export const Card: FC<CardPropsType> = ({ card }) => {
       <p className="mt-2 mb-4">{card.description}</p>
       <NavLink
         to={card.href}
-        className="inline-block bg-black text-white rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-gray-700"
+        className="inline-block bg-indigo-500 text-white rounded-lg px-4 py-2 transition-colors duration-300 hover:bg-indigo-700"
       >
         {card.link}
       </NavLink>

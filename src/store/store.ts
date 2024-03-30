@@ -21,6 +21,7 @@ export type JobType = {
 
 type StoreType = {
   jobs: JobType[]
+  job: JobType
   isLoading: boolean
   searchQuery: string
   setSearchQuery: (query: string) => void
@@ -28,12 +29,26 @@ type StoreType = {
   updateJob: (requestId: string, job: JobType) => void
   deleteJob: (requestId: string) => void
   fetchJobs: () => void
+  fetchJob: (id: string) => void
 }
 
 export const useJobs = createWithEqualityFn<StoreType>()(
   persist(
     (set, get) => ({
       jobs: [],
+      job: {
+        id: '',
+        uuid: '',
+        title: '',
+        type: '',
+        description: '',
+        location: '',
+        salary: '',
+        companyName: '',
+        companyDesc: '',
+        contactEmail: '',
+        contactPhone: '',
+      },
       isLoading: false,
       searchQuery: '',
       setSearchQuery: (query: string) => {
@@ -48,6 +63,14 @@ export const useJobs = createWithEqualityFn<StoreType>()(
             toast.error(err.message, { autoClose: false })
           )
           .finally(() => set({ isLoading: false }))
+      },
+      fetchJob: (id: string) => {
+        jobsAPI
+          .getJob(id)
+          .then((res) => set({ job: res.data }))
+          .catch((err: AxiosError) =>
+            toast.error(err.message, { autoClose: false })
+          )
       },
       createJob: (job: JobType) => {
         jobsAPI
@@ -68,7 +91,7 @@ export const useJobs = createWithEqualityFn<StoreType>()(
             const updatedJobs = jobs.map((item) =>
               item.id === id ? job : item
             )
-            set(() => ({ jobs: updatedJobs }))
+            set({ jobs: updatedJobs })
             toast.success('Job updated!')
           })
           .catch((err: AxiosError) =>
@@ -79,7 +102,7 @@ export const useJobs = createWithEqualityFn<StoreType>()(
         jobsAPI.deleteJob(id).then(() => {
           const jobs = get().jobs
           const updatedJobs = jobs.filter((job) => job.id !== id)
-          set(() => ({ jobs: updatedJobs }))
+          set({ jobs: updatedJobs })
           toast.success('Job deleted!')
         })
       },

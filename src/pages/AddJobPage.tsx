@@ -1,5 +1,5 @@
 import { FC } from 'react'
-import { Breadcrumbs } from '@components/Breadcrumbs'
+import { GoBack } from '@components/GoBack'
 import { useFormik } from 'formik'
 import { useLoaderData, useNavigate } from 'react-router-dom'
 import { useJobs, JobType } from '../store/store'
@@ -35,10 +35,7 @@ export const AddJobPage: FC = () => {
 
   return (
     <section className="bg-indigo-50">
-      <Breadcrumbs
-        href={job ? `/jobs/${job.id}` : '/'}
-        title={job ? 'Back' : 'Back to home page'}
-      />
+      <GoBack />
       <div className="container m-auto max-w-2xl py-14">
         <div className="bg-white px-6 py-8 mb-4 shadow-md rounded-md border m-4 md:m-0">
           <form onSubmit={formik.handleSubmit}>

@@ -14,11 +14,9 @@ export const JobsList: FC<JobsListPropsType> = ({ isHome }) => {
     searchQuery: state.searchQuery,
   }))
 
-  // const jobsList = isHome ? jobs.slice(0, 3) : jobs
-
   const filteredJobs =
-    searchQuery === ''
-      ? jobs
+    searchQuery === '' && isHome
+      ? jobs.slice(0, 3)
       : jobs.filter((job) => {
           return (
             job.title.toLowerCase().includes(searchQuery) ||

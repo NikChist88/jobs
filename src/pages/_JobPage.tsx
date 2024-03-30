@@ -1,13 +1,17 @@
-import { FC } from 'react'
+import { FC, useEffect } from 'react'
 import { GoBack } from '@components/GoBack'
 import { FaLocationDot } from 'react-icons/fa6'
-import { NavLink, useLoaderData, useNavigate } from 'react-router-dom'
-import { JobType, useJobs } from '../store/store'
+import { NavLink, useNavigate, useParams } from 'react-router-dom'
+import { useJobs } from '../store/store'
 
-export const JobPage: FC = () => {
-  const job = useLoaderData() as JobType
-  const deleteJob = useJobs((state) => state.deleteJob)
+export const _JobPage: FC = () => {
+  const { job, fetchJob, deleteJob } = useJobs((state) => ({
+    job: state.job,
+    fetchJob: state.fetchJob,
+    deleteJob: state.deleteJob,
+  }))
   const navigate = useNavigate()
+  const { id } = useParams()
 
   const handleDeleteJob = () => {
     if (window.confirm('Delete job?')) {
@@ -15,6 +19,10 @@ export const JobPage: FC = () => {
       navigate('/jobs')
     }
   }
+
+  useEffect(() => {
+    id && fetchJob(id)
+  }, [])
 
   return (
     <>

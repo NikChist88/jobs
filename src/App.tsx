@@ -2,6 +2,7 @@ import { MainLayout } from '@layouts/MainLayout'
 import { AddJobPage } from '@pages/AddJobPage'
 import { HomePage } from '@pages/HomePage'
 import { JobPage } from '@pages/JobPage'
+import { _JobPage } from '@pages/_JobPage'
 import { JobsPage } from '@pages/JobsPage'
 import { NotFoundPage } from '@pages/NotFoundPage'
 import {
