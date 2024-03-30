@@ -7,7 +7,7 @@ export const JobsFilter = () => {
     setSearchQuery: state.setSearchQuery,
   }))
 
-  const handleOnChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.currentTarget.value)
   }
 
@@ -20,7 +20,7 @@ export const JobsFilter = () => {
             className="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:border-indigo-500"
             placeholder="Filter jobs..."
             value={searchQuery}
-            onChange={handleOnChange}
+            onChange={handleChange}
           />
         </div>
       </div>

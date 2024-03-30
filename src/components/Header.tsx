@@ -1,7 +1,14 @@
 import { Link, NavLink } from 'react-router-dom'
+import { SlLogout } from 'react-icons/sl'
 import logo from '@assets/images/job-search.png'
+import { useAuth } from '../store/store'
 
 export const Header = () => {
+  const { isLogin, logout } = useAuth((state) => ({
+    isLogin: state.isLogin,
+    logout: state.logout,
+  }))
+
   return (
     <nav className="bg-indigo-700 border-b border-indigo-500">
       <div className="container-xl lg:container m-auto">
@@ -20,28 +27,42 @@ export const Header = () => {
                 Search Jobs
               </span>
             </Link>
-            <div className="md:ml-auto">
-              <div className="flex space-x-2">
-                <NavLink
-                  to="/"
-                  className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
+            {isLogin && (
+              <>
+                <div className="md:ml-auto">
+                  <div className="flex space-x-2">
+                    <NavLink
+                      to="/"
+                      className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
+                    >
+                      Home
+                    </NavLink>
+                    <NavLink
+                      to="/jobs"
+                      className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
+                    >
+                      Jobs
+                    </NavLink>
+                    <NavLink
+                      to="/addJob"
+                      className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
+                    >
+                      Add Job
+                    </NavLink>
+                  </div>
+                </div>
+                <div
+                  className="flex items-center justify-center cursor-pointer px-3 py-2 hover:bg-gray-900 transition-colors duration-300 rounded-md"
+                  title="logout"
+                  onClick={logout}
                 >
-                  Home
-                </NavLink>
-                <NavLink
-                  to="/jobs"
-                  className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
-                >
-                  Jobs
-                </NavLink>
-                <NavLink
-                  to="/addJob"
-                  className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
-                >
-                  Add Job
-                </NavLink>
-              </div>
-            </div>
+                  <SlLogout
+                    color="#fff"
+                    size={20}
+                  />
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

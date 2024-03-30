@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import { createWithEqualityFn } from 'zustand/traditional'
 import { shallow } from 'zustand/shallow'
 import { persist, createJSONStorage } from 'zustand/middleware'
+import { compareObjects } from '../utils/compareObjects'
 
 export type JobType = {
   id: string
@@ -19,7 +20,7 @@ export type JobType = {
   contactPhone: string
 }
 
-type StoreType = {
+type JobsStoreType = {
   jobs: JobType[]
   job: JobType
   isLoading: boolean
@@ -32,7 +33,7 @@ type StoreType = {
   fetchJob: (id: string) => void
 }
 
-export const useJobs = createWithEqualityFn<StoreType>()(
+export const useJobs = createWithEqualityFn<JobsStoreType>()(
   persist(
     (set, get) => ({
       jobs: [],
@@ -111,6 +112,44 @@ export const useJobs = createWithEqualityFn<StoreType>()(
       name: 'jobs-storage',
       storage: createJSONStorage(() => localStorage),
       // partialize: (state) => ({ jobs: state.jobs }),
+    }
+  ),
+  shallow
+)
+
+export type AuthDataType = {
+  email: string
+  password: string
+}
+
+type AuthStoreType = {
+  authData: AuthDataType
+  isLogin: boolean
+  login: (data: AuthDataType) => void
+  logout: () => void
+}
+
+export const useAuth = createWithEqualityFn<AuthStoreType>()(
+  persist(
+    (set, get) => ({
+      authData: {
+        email: 'samsepiol@gmail.com',
+        password: 'swordfish',
+      },
+      isLogin: false,
+      login: (data: AuthDataType) => {
+        const authData = get().authData
+        if (compareObjects(authData, data)) {
+          set({ isLogin: true })
+        }
+      },
+      logout: () => {
+        set({ isLogin: false })
+      },
+    }),
+    {
+      name: 'auth-storage',
+      storage: createJSONStorage(() => localStorage),
     }
   ),
   shallow

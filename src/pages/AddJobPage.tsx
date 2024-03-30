@@ -29,7 +29,7 @@ export const AddJobPage: FC = () => {
     },
     onSubmit: (values: JobType) => {
       job ? updateJob(job.id, values) : createJob(values)
-      navigate('/jobs')
+      navigate('/jobs', { replace: true })
     },
   })
 

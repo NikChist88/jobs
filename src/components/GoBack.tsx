@@ -10,8 +10,8 @@ export const GoBack: FC = () => {
     <section className="bg-white">
       <div className="container m-auto py-6 px-6 flex items-center gap-1">
         <span
-          onClick={goBack}
           className="text-indigo-500 hover:text-indigo-600 flex items-center cursor-pointer"
+          onClick={goBack}
         >
           <FaArrowLeft
             className="fas fa-arrow-left mr-2"

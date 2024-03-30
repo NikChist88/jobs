@@ -16,6 +16,7 @@ import {
 import { useEffect } from 'react'
 import { JobType, useJobs } from './store/store'
 import { jobsAPI } from './api/jobs-api'
+import { LoginPage } from '@pages/LoginPage'
 
 export const App = () => {
   const fetchJobs = useJobs((state) => state.fetchJobs)
@@ -60,6 +61,10 @@ export const App = () => {
           path="/addJob/:id"
           element={<AddJobPage />}
           loader={loader}
+        />
+        <Route
+          path="/login"
+          element={<LoginPage />}
         />
         <Route
           path="/*"

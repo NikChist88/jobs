@@ -12,7 +12,7 @@ export const JobPage: FC = () => {
   const handleDeleteJob = () => {
     if (window.confirm('Delete job?')) {
       deleteJob(job.id)
-      navigate('/jobs')
+      navigate('/jobs', { replace: true })
     }
   }
 
