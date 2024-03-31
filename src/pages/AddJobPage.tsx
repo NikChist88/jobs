@@ -2,7 +2,7 @@ import { FC } from 'react'
 import { GoBack } from '@components/GoBack'
 import { useFormik } from 'formik'
 import { useLoaderData, useNavigate } from 'react-router-dom'
-import { useJobs, JobType } from '../store/store'
+import { useJobs, JobType } from '../store/useJobs'
 import { nanoid } from 'nanoid'
 
 export const AddJobPage: FC = () => {

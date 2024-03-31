@@ -1,7 +1,7 @@
 import { Link, NavLink } from 'react-router-dom'
 import { SlLogout } from 'react-icons/sl'
 import logo from '@assets/images/job-search.png'
-import { useAuth } from '../store/store'
+import { useAuth } from '../store/useAuth'
 
 export const Header = () => {
   const { isLogin, logout } = useAuth((state) => ({
@@ -36,6 +36,12 @@ export const Header = () => {
                       className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
                     >
                       Home
+                    </NavLink>
+                    <NavLink
+                      to="/products"
+                      className="text-white hover:bg-gray-900 transition-colors duration-300 hover:text-white rounded-md px-3 py-2"
+                    >
+                      Products
                     </NavLink>
                     <NavLink
                       to="/jobs"

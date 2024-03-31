@@ -1,8 +1,8 @@
 import { ChangeEvent } from 'react'
-import { useJobsFilter } from '../store/store'
+import { useFilter } from '../store/useFilter'
 
-export const JobsFilter = () => {
-  const { searchQuery, setSearchQuery } = useJobsFilter((state) => ({
+export const Filter = () => {
+  const { searchQuery, setSearchQuery } = useFilter((state) => ({
     searchQuery: state.searchQuery,
     setSearchQuery: state.setSearchQuery,
   }))

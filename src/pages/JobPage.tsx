@@ -1,8 +1,24 @@
 import { FC } from 'react'
 import { GoBack } from '@components/GoBack'
 import { FaLocationDot } from 'react-icons/fa6'
-import { NavLink, useLoaderData, useNavigate } from 'react-router-dom'
-import { JobType, useJobs } from '../store/store'
+import {
+  LoaderFunction,
+  LoaderFunctionArgs,
+  NavLink,
+  useLoaderData,
+  useNavigate,
+} from 'react-router-dom'
+import { JobType, useJobs } from '../store/useJobs'
+import { jobsAPI } from '../api/jobs-api'
+
+export const jobLoader: LoaderFunction = async ({
+  params,
+}: LoaderFunctionArgs<JobType>) => {
+  if (params.id) {
+    const { data } = await jobsAPI.getJob(params.id)
+    return data
+  }
+}
 
 export const JobPage: FC = () => {
   const job = useLoaderData() as JobType

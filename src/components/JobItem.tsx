@@ -1,7 +1,7 @@
 import { FC, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import { FaLocationDot } from 'react-icons/fa6'
-import { JobType } from '../store/store'
+import { JobType } from '../store/useJobs'
 
 type JobPropsType = {
   job: JobType
@@ -23,7 +23,7 @@ export const JobItem: FC<JobPropsType> = ({ job }) => {
       </div>
       <div>{description}</div>
 
-      {description?.length > 90 && (
+      {job.description?.length > 90 && (
         <span
           className="block text-indigo-600 cursor-pointer hover:underline"
           onClick={() => setShowMore(!showMore)}

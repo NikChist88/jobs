@@ -1,10 +1,9 @@
 import { jobsAPI } from '../api/jobs-api'
 import { AxiosError } from 'axios'
 import { toast } from 'react-toastify'
-import { createWithEqualityFn } from 'zustand/traditional'
-import { shallow } from 'zustand/shallow'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { compareObjects } from '../utils/compareObjects'
+import { shallow } from 'zustand/shallow'
+import { createWithEqualityFn } from 'zustand/traditional'
 
 export type JobType = {
   id: string
@@ -61,7 +60,9 @@ export const useJobs = createWithEqualityFn<JobsStoreType>()(
       fetchJob: (id: string) => {
         jobsAPI
           .getJob(id)
-          .then((res) => set({ job: res.data }))
+          .then((res) => {
+            set({ job: res.data })
+          })
           .catch((err: AxiosError) =>
             toast.error(err.message, { autoClose: false })
           )
@@ -105,61 +106,6 @@ export const useJobs = createWithEqualityFn<JobsStoreType>()(
       name: 'jobs-storage',
       storage: createJSONStorage(() => localStorage),
       partialize: (state) => ({ jobs: state.jobs, isLoading: state.isLoading }),
-    }
-  ),
-  shallow
-)
-
-type JobsFilterStoreType = {
-  searchQuery: string
-  setSearchQuery: (query: string) => void
-}
-
-export const useJobsFilter = createWithEqualityFn<JobsFilterStoreType>(
-  (set) => ({
-    searchQuery: '',
-    setSearchQuery: (query: string) => {
-      set(() => ({ searchQuery: query }))
-    },
-    shallow,
-  })
-)
-
-export type AuthDataType = {
-  email: string
-  password: string
-}
-type AuthStoreType = {
-  authData: AuthDataType
-  isLogin: boolean
-  login: (data: AuthDataType) => void
-  logout: () => void
-}
-
-export const useAuth = createWithEqualityFn<AuthStoreType>()(
-  persist(
-    (set, get) => ({
-      authData: {
-        email: 'samsepiol@gmail.com',
-        password: 'swordfish',
-      },
-      isLogin: false,
-      login: (data: AuthDataType) => {
-        const authData = get().authData
-        if (compareObjects(authData, data)) {
-          set({ isLogin: true })
-        } else {
-          toast.error('Wrond email or password!')
-        }
-      },
-      logout: () => {
-        set({ isLogin: false })
-      },
-    }),
-    {
-      name: 'auth-storage',
-      storage: createJSONStorage(() => localStorage),
-      partialize: (state) => ({ isLogin: state.isLogin }),
     }
   ),
   shallow

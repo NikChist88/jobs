@@ -1,7 +1,8 @@
 import { FC } from 'react'
 import { JobItem } from './JobItem'
 import { Loader } from './Loader'
-import { useJobs, useJobsFilter } from '../store/store'
+import { useFilter } from '../store/useFilter'
+import { useJobs } from '../store/useJobs'
 
 type JobsListPropsType = {
   isHome?: boolean
@@ -12,7 +13,7 @@ export const JobsList: FC<JobsListPropsType> = ({ isHome }) => {
     jobs: state.jobs,
     isLoading: state.isLoading,
   }))
-  const searchQuery = useJobsFilter((state) => state.searchQuery)
+  const searchQuery = useFilter((state) => state.searchQuery)
 
   const filteredJobs =
     searchQuery === '' && isHome

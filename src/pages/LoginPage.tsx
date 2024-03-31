@@ -1,12 +1,10 @@
 import { FC } from 'react'
 import { useFormik } from 'formik'
-import { AuthDataType, useAuth } from '../store/store'
+import { AuthDataType, useAuth } from '../store/useAuth'
 import { useNavigate } from 'react-router-dom'
 
 export const LoginPage: FC = () => {
-  const { login } = useAuth((state) => ({
-    login: state.login,
-  }))
+  const login = useAuth((state) => state.login)
   const navigate = useNavigate()
 
   const formik = useFormik({

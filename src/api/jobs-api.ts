@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { JobType } from '../store/store'
+import { JobType } from '../store/useJobs'
 
 const localhost = 'http://localhost:8000/'
 const mockAPI = 'https://65fd6f139fc4425c6531ee24.mockapi.io/data/'
